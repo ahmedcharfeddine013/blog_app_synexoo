@@ -1,3 +1,5 @@
+import AdminNavbar from "./_components/AdminNavbar";
+import { AdminNavLink } from "./_components/AdminNavbar";
 export default function UserLayout({
   children,
 }: Readonly<{
@@ -5,6 +7,11 @@ export default function UserLayout({
 }>) {
   return (
     <>
+      <AdminNavbar>
+        <AdminNavLink href={"/admin"}>Dashboard</AdminNavLink>
+        <AdminNavLink href={"/admin/users"}>Users</AdminNavLink>
+        <AdminNavLink href={"/admin/blogs"}>Blogs</AdminNavLink>
+      </AdminNavbar>
       <div>{children}</div>
     </>
   );
