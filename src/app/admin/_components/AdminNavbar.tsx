@@ -6,7 +6,8 @@ import React, { ComponentProps, ReactNode } from "react";
 
 export default function AdminNavbar({ children }: { children: ReactNode }) {
   return (
-    <nav className="bg-primary text-primary-foreground flex justify-center px-4">
+    <nav className="bg-primary flex-col w-48 h-screen fixed items-center text-primary-foreground flex justify-center gap-2
+    py-3 px-4">
       {children}
     </nav>
   );
@@ -20,7 +21,7 @@ export function AdminNavLink(
   return (
     <Link
       {...props}
-      className={`p-4 hover:bg-secondary hover:text-secondary-foreground ${
+      className={`p-4 hover:bg-secondary w-full transition-all duration-100 ease-in rounded-md hover:text-secondary-foreground ${
         pathname === props.href && "bg-background text-foreground "
       } `}
     />

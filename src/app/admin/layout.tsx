@@ -12,7 +12,7 @@ export default function UserLayout({
         <AdminNavLink href={"/admin/users"}>Users</AdminNavLink>
         <AdminNavLink href={"/admin/blogs"}>Blogs</AdminNavLink>
       </AdminNavbar>
-      <div>{children}</div>
+      <div className="pl-[14rem] py-10 ">{children}</div>
     </>
   );
 }
