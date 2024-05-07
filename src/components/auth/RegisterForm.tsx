@@ -4,9 +4,8 @@ import React, { useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
-import { LoginSchema } from "@/schema";
+import { RegisterSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSearchParams } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -17,54 +16,39 @@ import {
 } from "../ui/form";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
-import { login } from "@/actions/login";
 import { useTransition } from "react";
 import Link from "next/link";
+// import { register } from "@/actions/register";
 
-const LoginForm = () => {
-  const searchParams = useSearchParams();
-  const urlError =
-    searchParams.get("error") === "OAuthAccountNotLinked"
-      ? "Email already in use with different provider"
-      : "";
-
-  const [showTwoFactor, setShowTwoFactor] = useState(false);
-
+const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
       email: "",
       password: "",
+      name: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
     // setError("");
     // setSuccess("");
     // startTransition(() => {
-    //   login(values)
-    //     .then((data) => {
-    //       if (data?.error) {
-    //         form.reset();
-    //         setError(data.error);
-    //       }
-    //       if (data?.success) {
-    //         form.reset();
-    //         setSuccess(data.success);
-    //       }
-    //     })
-    //     .catch(() => setError("Something went wrong!"));
+    //   register(values).then((data) => {
+    //     setError(data.error);
+    //     setSuccess(data.success);
+    //   });
     // });
   };
 
   return (
     <div>
       <div className="flex flex-col items-center justify-center p-12 gap-6 border-2 rounded-xl">
-        <h1 className="text-xl">Welcome Back</h1>
+        <h1 className="text-xl">Create an account</h1>
         <div className="flex flex-col w-[400px] gap-6">
           <Form {...form}>
             <form
@@ -72,6 +56,23 @@ const LoginForm = () => {
               onSubmit={form.handleSubmit(onSubmit)}
             >
               <div className="flex flex-col items-start justify-center gap-4 w-full">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Name"
+                          disabled={isPending}
+                        ></Input>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="email"
@@ -104,27 +105,19 @@ const LoginForm = () => {
                           disabled={isPending}
                         ></Input>
                       </FormControl>
-                      <Button
-                        size="sm"
-                        variant="link"
-                        asChild
-                        className="px-0 font-normal"
-                      >
-                        <Link href="/auth/reset">Forgot password</Link>
-                      </Button>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
-              <FormError message={error || urlError} />
+              <FormError message={error} />
               <FormSuccess message={success} />
               <Button
                 type="submit"
                 className="w-full flex items-center justify-center gap-2"
                 disabled={isPending}
               >
-                {showTwoFactor ? "Confirm" : "Login"}
+                Create an account with Email
               </Button>
             </form>
           </Form>
@@ -134,10 +127,10 @@ const LoginForm = () => {
             Policy
           </div>
           <Link
-            href="../auth/register"
+            href="../auth/login"
             className="px-8 text-center text-sm text-muted-foreground hover:underline"
           >
-            Don&apos;t have an account?
+            Already have an account?
           </Link>
         </div>
       </div>
@@ -145,4 +138,7 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
+// function zodResolver(RegisterSchema: ZodObject<{ email: ZodString; password: ZodString; code: ZodOptional<ZodString>; }, "strip", ZodTypeAny, { email: string; password: string; code?: string | undefined; }, { email: string; password: string; code?: string | undefined; }>): import("react-hook-form").Resolver<z.infer<import("zod").ZodObject<{ email: import("zod").ZodString; password: import("zod").ZodString; code: import("zod").ZodOptional<import("zod").ZodString>; }, "strip", import("zod").ZodTypeAny, { ...; }, { ...; }>>, any> | undefined {
+//   throw new Error("Function not implemented.");
+// }
