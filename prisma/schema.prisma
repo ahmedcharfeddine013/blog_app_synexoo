@@ -8,16 +8,22 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum UserRole {
+  ADMIN
+  USER
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
+  Role           UserRole
   id             String   @id @default(uuid())
   username       String   @unique
   password       String   @unique
-  email          String
+  email          String   @unique
   profilePicture String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @default(now())
@@ -34,14 +40,4 @@ model Blog {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   author    User     @relation(fields: [authorId], references: [id])
-}
-
-model Admin {
-  id             String   @id @default(uuid())
-  username       String   @unique
-  password       String   @unique
-  email          String   @unique
-  profilePicture String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @default(now())
 }

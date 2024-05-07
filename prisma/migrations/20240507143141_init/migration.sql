@@ -1,5 +1,9 @@
+-- CreateEnum
+CREATE TYPE "UserRole" AS ENUM ('ADMIN', 'USER');
+
 -- CreateTable
 CREATE TABLE "User" (
+    "Role" "UserRole" NOT NULL,
     "id" TEXT NOT NULL,
     "username" TEXT NOT NULL,
     "password" TEXT NOT NULL,
@@ -25,19 +29,6 @@ CREATE TABLE "Blog" (
     CONSTRAINT "Blog_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "Admin" (
-    "id" TEXT NOT NULL,
-    "username" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "profilePicture" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "Admin_pkey" PRIMARY KEY ("id")
-);
-
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
@@ -45,13 +36,7 @@ CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 CREATE UNIQUE INDEX "User_password_key" ON "User"("password");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Admin_username_key" ON "Admin"("username");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Admin_password_key" ON "Admin"("password");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Admin_email_key" ON "Admin"("email");
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
 ALTER TABLE "Blog" ADD CONSTRAINT "Blog_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
