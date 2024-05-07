@@ -1,5 +1,5 @@
 import React from "react";
-import AdminPageHeader from "./_components/AdminPageHeader";
+import AdminPageHeader from "../_components/AdminPageHeader";
 import db from "@/db/db";
 import {
   Card,
