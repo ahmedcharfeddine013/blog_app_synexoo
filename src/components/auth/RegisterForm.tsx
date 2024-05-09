@@ -37,7 +37,7 @@ const RegisterForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
-    const response = await fetch("/src/app/api/user", {
+    const response = await fetch("/api/user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -73,11 +73,7 @@ const RegisterForm = () => {
                     <FormItem className="w-full">
                       <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="Name"
-                          disabled={isPending}
-                        ></Input>
+                        <Input {...field} placeholder="Name"></Input>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -94,7 +90,6 @@ const RegisterForm = () => {
                           {...field}
                           placeholder="email"
                           type="email"
-                          disabled={isPending}
                         ></Input>
                       </FormControl>
                       <FormMessage />
@@ -112,7 +107,6 @@ const RegisterForm = () => {
                           {...field}
                           placeholder="password"
                           type="password"
-                          disabled={isPending}
                         ></Input>
                       </FormControl>
                       <FormMessage />
@@ -120,14 +114,13 @@ const RegisterForm = () => {
                   )}
                 />
               </div>
-              <FormError message={error} />
-              <FormSuccess message={success} />
+              {/* <FormError message={error} />
+              <FormSuccess message={success} /> */}
               <Button
                 type="submit"
                 className="w-full flex items-center justify-center gap-2"
-                disabled={isPending}
               >
-                Create an account with Email
+                Sign Up
               </Button>
             </form>
           </Form>
@@ -137,7 +130,7 @@ const RegisterForm = () => {
             Policy
           </div>
           <Link
-            href="../auth/login"
+            href="../auth/sign-in"
             className="px-8 text-center text-sm text-muted-foreground hover:underline"
           >
             Already have an account?

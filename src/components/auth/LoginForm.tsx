@@ -17,9 +17,9 @@ import {
 } from "../ui/form";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
-import { login } from "@/actions/login";
 import { useTransition } from "react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 const LoginForm = () => {
   const searchParams = useSearchParams();
@@ -42,23 +42,12 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    // setError("");
-    // setSuccess("");
-    // startTransition(() => {
-    //   login(values)
-    //     .then((data) => {
-    //       if (data?.error) {
-    //         form.reset();
-    //         setError(data.error);
-    //       }
-    //       if (data?.success) {
-    //         form.reset();
-    //         setSuccess(data.success);
-    //       }
-    //     })
-    //     .catch(() => setError("Something went wrong!"));
-    // });
+  const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
+    const signInData = await signIn("credentials", {
+      email: values.email,
+      password: values.password,
+    });
+    console.log(signInData);
   };
 
   return (
