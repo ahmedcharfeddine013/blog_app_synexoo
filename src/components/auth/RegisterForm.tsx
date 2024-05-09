@@ -41,7 +41,7 @@ const RegisterForm = () => {
     setSuccess("");
     startTransition(() => {
       axios
-        .post("/src/app/(root)/auth/_actions/register.ts", values)
+        .post("/src/app/(root)/auth/_actions/register", values)
         .then((response) => {
           setSuccess(response.data.message);
           router.push("/");
