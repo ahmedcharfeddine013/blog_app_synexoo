@@ -1,7 +1,13 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import db from "@/db/db";
 
 export const options: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+  },
+  adapter: PrismaAdapter(db),
   providers: [
     CredentialsProvider({
       name: "Credentials",
