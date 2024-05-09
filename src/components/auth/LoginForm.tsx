@@ -15,9 +15,6 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { FormError } from "../form-error";
-import { FormSuccess } from "../form-success";
-import { useTransition } from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 
@@ -28,12 +25,7 @@ const LoginForm = () => {
       ? "Email already in use with different provider"
       : "";
 
-  const [showTwoFactor, setShowTwoFactor] = useState(false);
-
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
-  const [isPending, startTransition] = useTransition();
-  const router = useRouter()
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -78,7 +70,6 @@ const LoginForm = () => {
                           {...field}
                           placeholder="email"
                           type="email"
-                          disabled={isPending}
                         ></Input>
                       </FormControl>
                       <FormMessage />
@@ -96,7 +87,6 @@ const LoginForm = () => {
                           {...field}
                           placeholder="password"
                           type="password"
-                          disabled={isPending}
                         ></Input>
                       </FormControl>
                       <Button
@@ -112,14 +102,11 @@ const LoginForm = () => {
                   )}
                 />
               </div>
-              <FormError message={error || urlError} />
-              <FormSuccess message={success} />
               <Button
                 type="submit"
                 className="w-full flex items-center justify-center gap-2"
-                disabled={isPending}
               >
-                {showTwoFactor ? "Confirm" : "Login"}
+                LOGIN
               </Button>
             </form>
           </Form>
