@@ -18,7 +18,7 @@ import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { useTransition } from "react";
 import Link from "next/link";
-// import { register } from "@/actions/register";
+import { register } from "@/actions/register";
 
 const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -35,14 +35,14 @@ const RegisterForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-    // setError("");
-    // setSuccess("");
-    // startTransition(() => {
-    //   register(values).then((data) => {
-    //     setError(data.error);
-    //     setSuccess(data.success);
-    //   });
-    // });
+    setError("");
+    setSuccess("");
+    startTransition(() => {
+      register(values).then((data) => {
+        setError(data.error);
+        setSuccess(data.success);
+      });
+    });
   };
 
   return (
