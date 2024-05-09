@@ -46,8 +46,13 @@ const LoginForm = () => {
     const signInData = await signIn("credentials", {
       email: values.email,
       password: values.password,
+      redirect: false,
     });
-    console.log(signInData);
+    if (signInData?.error) {
+      console.log(signInData.error);
+    } else {
+      router.push("/");
+    }
   };
 
   return (
