@@ -2,7 +2,7 @@ import * as z from "zod";
 import { UserRole } from "@prisma/client";
 
 export const NewPasswordSchema = z.object({
-  password: z.string().min(6,{
+  password: z.string().min(6, {
     message: "Minimum of 6 characters required",
   }),
 });
@@ -24,13 +24,7 @@ export const LoginSchema = z.object({
 });
 
 export const RegisterSchema = z.object({
-  email: z.string().email({
-    message: "Email is required",
-  }),
-  password: z.string().min(6, {
-    message: "Minimum 6 characters required",
-  }),
-  name: z.string().min(1, {
-    message: "Name is required",
-  }),
+  name: z.string().min(1, "Name is required!"),
+  email: z.string().min(1, "Email is required!").email("Invalid email"),
+  password: z.string().min(8, "Password should be minimum of 8!"),
 });

@@ -30,26 +30,29 @@ const RegisterForm = () => {
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
-      name: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-    setError("");
-    setSuccess("");
-    startTransition(() => {
-      axios
-        .post("/src/app/(root)/auth/_actions/register", values)
-        .then((response) => {
-          setSuccess(response.data.message);
-          router.push("/");
-        })
-        .catch((error) => {
-          setError(error.response.data.message);
-        });
+  const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
+    const response = await fetch("/src/app/api/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      }),
     });
+    if (response.ok) {
+      router.push("/");
+    } else {
+      console.log("Registration failed!");
+    }
   };
 
   return (
