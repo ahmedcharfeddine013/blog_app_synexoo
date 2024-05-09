@@ -18,12 +18,14 @@ import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { useTransition } from "react";
 import Link from "next/link";
-import { register } from "@/actions/register";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -38,10 +40,15 @@ const RegisterForm = () => {
     setError("");
     setSuccess("");
     startTransition(() => {
-      register(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-      });
+      axios
+        .post("/src/app/(root)/auth/_actions/register.ts", values)
+        .then((response) => {
+          setSuccess(response.data.message);
+          router.push("/");
+        })
+        .catch((error) => {
+          setError(error.response.data.message);
+        });
     });
   };
 
@@ -139,6 +146,3 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
-// function zodResolver(RegisterSchema: ZodObject<{ email: ZodString; password: ZodString; code: ZodOptional<ZodString>; }, "strip", ZodTypeAny, { email: string; password: string; code?: string | undefined; }, { email: string; password: string; code?: string | undefined; }>): import("react-hook-form").Resolver<z.infer<import("zod").ZodObject<{ email: import("zod").ZodString; password: import("zod").ZodString; code: import("zod").ZodOptional<import("zod").ZodString>; }, "strip", import("zod").ZodTypeAny, { ...; }, { ...; }>>, any> | undefined {
-//   throw new Error("Function not implemented.");
-// }

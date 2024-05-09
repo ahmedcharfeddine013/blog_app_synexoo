@@ -37,9 +37,7 @@ export default async function handler(
         .status(201)
         .json({ message: "User registered successfully", user: newUser });
     } catch (error) {
-      return res
-        .status(500)
-        .json({ message: "Failed to register user", error: error.message });
+      return res.status(500).json({ message: "Failed to register user" });
     }
   }
 
