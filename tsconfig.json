@@ -12,8 +12,6 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "types": ["@types/node", "@types/next", "@types/next-auth"],
-    "typeRoots": ["./node_modules/@types"],
     "plugins": [
       {
         "name": "next"
