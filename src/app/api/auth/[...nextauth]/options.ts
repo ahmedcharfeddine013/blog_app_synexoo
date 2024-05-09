@@ -1,8 +1,5 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { LoginSchema } from "./schema";
-import { getUserByEmail } from "./data/user";
-import bcrypt from "bcryptjs";
 
 export const options: NextAuthOptions = {
   providers: [
@@ -21,10 +18,14 @@ export const options: NextAuthOptions = {
         },
       },
       async authorize(credentials) {
+        // This is where you need to retrieve user data
+        // to verify with credentials
+        // Docs: https://next-auth.js.org/configuration/providers/credentials
         const user = { id: "42", name: "Dave", password: "nextauth" };
+
         if (
-          credentials?.username == user.name &&
-          credentials?.password == user.password
+          credentials?.username === user.name &&
+          credentials?.password === user.password
         ) {
           return user;
         } else {
