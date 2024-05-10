@@ -1,24 +1,24 @@
 import React from "react";
-import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import Link from "next/link";
+import { UserProps } from "./edit/types/user";
 
-interface ProfileSectionProps {
-  name: string;
-  id: string;
-  email?: string | null | undefined;
-  image?: string | null | undefined;
-}
-
-export default function ProfileSection({
-  name,
-  email,
-  image,
-}: ProfileSectionProps) {
+export default function ProfileSection({ name, email, image }: UserProps) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>{name}</CardTitle>
         <CardDescription>{email}</CardDescription>
       </CardHeader>
+      <CardContent>
+        <Link href={"/user/profile/edit"}>Edit Profile</Link>
+      </CardContent>
     </Card>
   );
 }
