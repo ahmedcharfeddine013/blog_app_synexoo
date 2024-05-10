@@ -44,11 +44,31 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
         return {
-          id: "",
-          email: credentials.email,
-          password: credentials.password,
+          id: `${existingUser.id}`,
+          email: existingUser.email,
+          name: existingUser.name,
         };
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        return {
+          ...token,
+          name: user.name,
+        };
+      }
+      return token;
+    },
+    async session({ session, token, user }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          name: token.name,
+        },
+      };
+    },
+  },
 };
