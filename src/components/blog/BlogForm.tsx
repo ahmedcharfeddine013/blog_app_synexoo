@@ -9,7 +9,7 @@ import { Input } from "../ui/input";
 import Image from "next/image";
 
 null;
-export default function BlogForm({ blog }: { blog: Blog | null }) {
+export default function BlogForm({ blog }: { blog?: Blog | null }) {
   const [error, action] = useFormState(
     blog == null ? AddBlog : editBlog.bind(null, blog.id),
     {}
