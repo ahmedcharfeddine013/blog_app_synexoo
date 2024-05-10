@@ -18,7 +18,7 @@ const addBlogSchema = z.object({
   summary: z.string().min(1, "Summary required"),
   content: z.string().min(1, "Content required"),
   cover: imageSchema.refine((image) => image.size > 0, "Cover image required!"),
-  author: z.string(),
+  author: z.string().min(1, "Author required"),
 });
 
 export async function AddBlog(prevState: unknown, formData: FormData) {
@@ -34,7 +34,7 @@ export async function AddBlog(prevState: unknown, formData: FormData) {
 
   const data = result.data;
   await fs.mkdir("public/blogs", { recursive: true });
-  const imagePath = `/blogs/${crypto.randomUUID()}-${data.cover.name}`;
+  const imagePath = `/user/blogs/${crypto.randomUUID()}-${data.cover.name}`;
   await fs.writeFile(
     `public${imagePath}`,
     Buffer.from(await data.cover.arrayBuffer())
@@ -46,11 +46,9 @@ export async function AddBlog(prevState: unknown, formData: FormData) {
       summary: data.summary,
       content: data.content,
       cover: imagePath,
-      author: user?.name,
+      author : user.name
     },
   });
-
-  revalidatePath("/");
 }
 
 const editSchema = addBlogSchema.extend({
@@ -90,7 +88,6 @@ export async function editBlog(
       title: data.title,
       summary: data.summary,
       content: data.summary,
-      imagePath,
     },
   });
 

@@ -1,3 +1,5 @@
+'use client'
+
 import React from "react";
 import { Form } from "../ui/form";
 import { useFormState, useFormStatus } from "react-dom";
@@ -7,6 +9,7 @@ import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import Image from "next/image";
+import { Textarea } from "../ui/textarea";
 
 null;
 export default function BlogForm({ blog }: { blog?: Blog | null }) {
@@ -15,13 +18,24 @@ export default function BlogForm({ blog }: { blog?: Blog | null }) {
     {}
   );
   return (
-    <form action={action}>
-      <div className="space-y-2">
-        <Label htmlFor="name">Title</Label>
+    <form action={action} className="space-y-6">
+        <div className="space-y-2">
+        <Label htmlFor="author">Author</Label>
         <Input
           type="text"
-          id="name"
-          name="name"
+          id="author"
+          name="author"
+          required
+          defaultValue={blog?.title || ""}
+        />
+        {error?.title && <div className="text-red-500">{error.title}</div>}
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="title">Title</Label>
+        <Input
+          type="text"
+          id="title"
+          name="title"
           required
           defaultValue={blog?.title || ""}
         />
@@ -40,15 +54,14 @@ export default function BlogForm({ blog }: { blog?: Blog | null }) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="priceInCents">Content</Label>
-        <Input
-          type="text"
-          id="description"
-          name="description"
+        <Label htmlFor="content">Content</Label>
+        <Textarea
+          id="content"
+          name="content"
           required
-          defaultValue={blog?.summary}
+          defaultValue={blog?.content}
         />
-        {blog?.summary && <div className="text-red-500">{blog.summary}</div>}
+        {blog?.content && <div className="text-red-500">{blog.content}</div>}
       </div>
       <div className="space-y-2">
         <Label htmlFor="image">Image</Label>

@@ -3,7 +3,7 @@ import BlogForm from "../../../../components/blog/BlogForm";
 
 export default function AddBlogUserPage() {
   return (
-    <div>
+    <div className="flex items-center justify-center h-screen w-screen">
       <BlogForm />
     </div>
   );
