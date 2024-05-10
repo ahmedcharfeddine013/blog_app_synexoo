@@ -4,9 +4,9 @@ import db from "@/db/db";
 import * as z from "zod";
 import fs from "fs/promises";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { notFound } from "next/navigation";
+import { getSession } from "next-auth/react";
 
 const fileSchema = z.instanceof(File, { message: "Required" });
 const imageSchema = fileSchema.refine(
@@ -18,21 +18,19 @@ const addBlogSchema = z.object({
   summary: z.string().min(1, "Summary required"),
   content: z.string().min(1, "Content required"),
   cover: imageSchema.refine((image) => image.size > 0, "Cover image required!"),
-  author: z.string().min(1, "Author required"),
 });
 
-export async function AddBlog(prevState: unknown, formData: FormData) {
-  const user = await useCurrentUser();
-  if (user == null) throw new Error("you must sign in!");
+export async function AddBlog(authorId: string, formData: FormData) {
   const result = addBlogSchema.safeParse(
     Object.fromEntries(formData.entries())
   );
 
-  if (result.success == false) {
+  if (!result.success) {
     return result.error.formErrors.fieldErrors;
   }
 
   const data = result.data;
+
   await fs.mkdir("public/blogs", { recursive: true });
   const imagePath = `/user/blogs/${crypto.randomUUID()}-${data.cover.name}`;
   await fs.writeFile(
@@ -46,7 +44,7 @@ export async function AddBlog(prevState: unknown, formData: FormData) {
       summary: data.summary,
       content: data.content,
       cover: imagePath,
-      author : user.name
+      authorId: authorId,
     },
   });
 }
@@ -56,12 +54,13 @@ const editSchema = addBlogSchema.extend({
 });
 
 export async function editBlog(
+  userId: string,
   id: string,
   prevState: unknown,
   formData: FormData
 ) {
   const result = editSchema.safeParse(Object.fromEntries(formData.entries()));
-  if (result.success === false) {
+  if (!result.success) {
     return result.error.formErrors.fieldErrors;
   }
 
@@ -70,7 +69,12 @@ export async function editBlog(
     where: { id },
   });
 
-  if (blog == null) return notFound();
+  if (!blog) return notFound();
+
+  // Check if the user is authorized to edit the blog post
+  if (blog.authorId !== userId) {
+    throw new Error("You are not authorized to edit this blog post.");
+  }
 
   let imagePath = blog.cover;
   if (data.image != null && data.image.size > 0) {
@@ -87,7 +91,8 @@ export async function editBlog(
     data: {
       title: data.title,
       summary: data.summary,
-      content: data.summary,
+      content: data.content,
+      cover: imagePath,
     },
   });
 

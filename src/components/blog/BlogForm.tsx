@@ -1,10 +1,9 @@
-'use client'
+"use client";
 
 import React from "react";
-import { Form } from "../ui/form";
 import { useFormState, useFormStatus } from "react-dom";
 import { AddBlog, editBlog } from "./_actions/blog";
-import { Blog } from "@prisma/client";
+import { Blog, User } from "@prisma/client";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
@@ -12,21 +11,27 @@ import Image from "next/image";
 import { Textarea } from "../ui/textarea";
 
 null;
-export default function BlogForm({ blog }: { blog?: Blog | null }) {
+export default function BlogForm({
+  blog,
+  user,
+}: {
+  blog?: Blog | null;
+  user?: User | null;
+}) {
   const [error, action] = useFormState(
-    blog == null ? AddBlog : editBlog.bind(null, blog.id),
+    blog == null ? AddBlog : editBlog.bind(null, user?.id, blog.id),
     {}
   );
   return (
     <form action={action} className="space-y-6">
-        <div className="space-y-2">
+      <div className="space-y-2">
         <Label htmlFor="author">Author</Label>
         <Input
           type="text"
           id="author"
           name="author"
           required
-          defaultValue={blog?.title || ""}
+          defaultValue={user?.name}
         />
         {error?.title && <div className="text-red-500">{error.title}</div>}
       </div>
