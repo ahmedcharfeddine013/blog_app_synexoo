@@ -6,37 +6,49 @@ import axios from "axios";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { addBlogSchema } from "@/app/api/blogs/route";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-interface FormData {
-  title: string;
-  summary: string;
-  cover: string;
-  content: string;
-}
+// interface FormData {
+//   title: string;
+//   summary: string;
+//   cover: string;
+//   content: string;
+// }
 
 const AddBlogForm: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
-    title: "",
-    summary: "",
-    cover: "",
-    content: "",
+  const router = useRouter();
+
+  const form = useForm<z.infer<typeof addBlogSchema>>({
+    resolver: zodResolver(addBlogSchema),
+    defaultValues: {
+      title: "",
+      summary: "",
+      content: "",
+      cover : undefined,
+    },
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post("/api/blogs", formData);
-      console.log(res.data);
-      // Optionally, redirect or show a success message
-    } catch (error) {
-      console.error(error);
-      // Handle error
+  const onSubmit = async (values: z.infer<typeof addBlogSchema>) => {
+    const response = await fetch("/api/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: values.title,
+        summary: values.summary,
+        content: values.content,
+        cover: values.cover,
+      }),
+    });
+    if (response.ok) {
+      router.push("/");
+    } else {
+      console.log("Registration failed!");
     }
   };
 

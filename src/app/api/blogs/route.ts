@@ -17,7 +17,7 @@ const imageSchema = fileSchema.refine(
   (file) => file.size === 0 || file.type.startsWith("image/")
 );
 
-const addBlogSchema = z.object({
+export const addBlogSchema = z.object({
   title: z.string().min(1, "Title required"),
   summary: z.string().min(1, "Summary required"),
   content: z.string().min(1, "Content required"),
