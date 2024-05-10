@@ -18,10 +18,7 @@ export default function BlogForm({
   blog?: Blog | null;
   user?: User | null;
 }) {
-  const [error, action] = useFormState(
-    blog == null ? AddBlog : editBlog.bind(null, user?.id, blog.id),
-    {}
-  );
+  const [error, action] = useFormState( blog == null ? AddBlog : editBlog.bind(null, user?.id, blog.id) , {});
   return (
     <form action={action} className="space-y-6">
       <div className="space-y-2">
