@@ -1,9 +1,13 @@
 import React from 'react'
+import { Form } from '../ui/form'
 
 export default function BlogForm() {
+    
   return (
-    <div>
-      
-    </div>
+    <Form {action}>
+      <form action="">
+
+      </form>
+    </Form>
   )
 }
