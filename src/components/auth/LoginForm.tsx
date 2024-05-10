@@ -17,6 +17,7 @@ import {
 } from "../ui/form";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { useToast } from "../ui/use-toast";
 
 const LoginForm = () => {
   const searchParams = useSearchParams();
@@ -26,6 +27,7 @@ const LoginForm = () => {
       : "";
 
   const router = useRouter();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -43,9 +45,19 @@ const LoginForm = () => {
     });
     if (signInData?.error) {
       console.log(signInData.error);
+      toast({
+        title: "Sign In Failed!",
+        description: "Something went wrong!",
+        variant: "destructive",
+      });
     } else {
       router.push("/");
       router.refresh();
+      toast({
+        title: "Success",
+        description: "Signed in successfully",
+        variant: "default",
+      });
     }
   };
 

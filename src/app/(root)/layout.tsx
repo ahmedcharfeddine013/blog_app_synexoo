@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function UserLayout({
   children,
@@ -9,6 +10,7 @@ export default function UserLayout({
     <>
       <Navbar />
       <div>{children}</div>
+      <Toaster />
     </>
   );
 }
