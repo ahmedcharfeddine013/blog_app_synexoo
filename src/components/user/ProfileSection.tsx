@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import Link from "next/link";
-import { UserProps } from "./edit/types/user";
+import { UserProps } from "@/types/user";
 
 export default function ProfileSection({ name, email, image }: UserProps) {
   return (
