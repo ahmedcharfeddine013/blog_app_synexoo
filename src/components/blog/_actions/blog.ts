@@ -84,5 +84,15 @@ export async function editBlog(
     );
   }
 
-  
+  await db.blog.update({
+    where: { id },
+    data: {
+      title: data.title,
+      summary: data.summary,
+      content: data.summary,
+      imagePath,
+    },
+  });
+
+  revalidatePath("/");
 }
