@@ -45,6 +45,7 @@ const LoginForm = () => {
       console.log(signInData.error);
     } else {
       router.push("/");
+      router.refresh();
     }
   };
 
