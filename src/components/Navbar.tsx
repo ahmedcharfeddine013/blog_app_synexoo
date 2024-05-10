@@ -1,7 +1,7 @@
 import React from "react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import SignOutButton from "./SignOutButton";
+import SignOutButton from "./user/SignOutButton";
 import Link from "next/link";
 
 export default async function Navbar() {

@@ -51,7 +51,7 @@ const LoginForm = () => {
         variant: "destructive",
       });
     } else {
-      router.push("/");
+      router.push("/user/profile");
       router.refresh();
       toast({
         title: "Success",
