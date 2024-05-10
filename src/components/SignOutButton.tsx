@@ -1,10 +1,8 @@
 "use client";
-import React, { useTransition } from "react";
+import React from "react";
 import { signOut } from "next-auth/react";
 import { Button } from "./ui/button";
-import { useToast } from "./ui/use-toast";
-import { useRouter } from "next/navigation";
-import { The_Nautigal } from "next/font/google";
+
 
 export default function SignOutButton() {
   return (
