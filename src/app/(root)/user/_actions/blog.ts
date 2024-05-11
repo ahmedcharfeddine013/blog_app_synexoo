@@ -3,7 +3,7 @@
 import db from "@/db/db";
 import * as z from "zod";
 import fs from "fs/promises";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getSession } from "next-auth/react";
 
 const fileSchema = z.instanceof(File, { message: "Required" });
@@ -55,6 +55,8 @@ export async function AddBlog(prevState: unknown, formData: FormData) {
       author: { connect: { email: userEmail } },
     },
   });
+
+  redirect("/");
 }
 
 const editBlogSchema = addBlogSchema.extend({
@@ -112,4 +114,5 @@ export async function updateBlog(
       cover: imagePath,
     },
   });
+  redirect("/");
 }

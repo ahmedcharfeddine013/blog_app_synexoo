@@ -1,11 +1,14 @@
+"use client";
+
 import { Blog } from "@prisma/client";
 import React from "react";
 import { useFormState, useFormStatus } from "react-dom";
-import { AddBlog, updateBlog } from "./_actions/blog";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
+import { AddBlog, updateBlog } from "../_actions/blog";
 import Image from "next/image";
-import { Button } from "../ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
 
 export default function BlogForm({ blog }: { blog?: Blog | null }) {
   const [error, action] = useFormState(
@@ -13,9 +16,9 @@ export default function BlogForm({ blog }: { blog?: Blog | null }) {
     {}
   );
   return (
-    <form action={action}>
+    <form action={action} className="space-y-6 p-6 border-2 rounded-lg">
       <div className="space-y-2">
-        <Label htmlFor="title">Name</Label>
+        <Label htmlFor="title">Title</Label>
         <Input
           type="text"
           id="title"
@@ -26,7 +29,7 @@ export default function BlogForm({ blog }: { blog?: Blog | null }) {
         {error?.title && <div className="text-red-500">{error.title}</div>}
       </div>
       <div className="space-y-2">
-        <Label htmlFor="summary">Name</Label>
+        <Label htmlFor="summary">Summary</Label>
         <Input
           type="text"
           id="summary"
@@ -37,7 +40,7 @@ export default function BlogForm({ blog }: { blog?: Blog | null }) {
         {error?.summary && <div className="text-red-500">{error.summary}</div>}
       </div>
       <div className="space-y-2">
-        <Label htmlFor="content">Name</Label>
+        <Label htmlFor="content">Content</Label>
         <Input
           type="text"
           id="content"

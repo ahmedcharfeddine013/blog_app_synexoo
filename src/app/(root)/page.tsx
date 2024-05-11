@@ -1,7 +1,7 @@
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
-import AddBlogButton from "../../components/blog/AddBlogButton";
 import db from "@/db/db";
+import AddBlogButton from "@/components/blog/AddBlogButton";
 
 async function getblogs() {
   return await db.blog.findMany({
