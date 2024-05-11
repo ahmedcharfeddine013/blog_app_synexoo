@@ -39,8 +39,8 @@ export async function AddBlog(prevState: unknown, formData: FormData) {
   }
 
   const data = result.data;
-  await fs.mkdir("public/products", { recursive: true });
-  const imagePath = `/products/${crypto.randomUUID()}-${data.cover.name}`;
+  await fs.mkdir("public/blogs", { recursive: true });
+  const imagePath = `/user/blogs/${crypto.randomUUID()}-${data.cover.name}`;
   await fs.writeFile(
     `public${imagePath}`,
     Buffer.from(await data.cover.arrayBuffer())
@@ -53,6 +53,63 @@ export async function AddBlog(prevState: unknown, formData: FormData) {
       content: data.content,
       cover: imagePath,
       author: { connect: { email: userEmail } },
+    },
+  });
+}
+
+const editBlogSchema = addBlogSchema.extend({
+  image: imageSchema.optional(),
+});
+
+export async function updateBlog(
+  id: string,
+  prevState: unknown,
+  formData: FormData
+) {
+  const session = await getSession();
+
+  if (!session) {
+    return notFound();
+  }
+
+  const userEmail = session.user?.email;
+
+  if (!userEmail) {
+    return notFound();
+  }
+
+  const result = editBlogSchema.safeParse(
+    Object.fromEntries(formData.entries())
+  );
+  if (result.success == false) {
+    return result.error.formErrors.fieldErrors;
+  }
+
+  const data = result.data;
+
+  const blog = await db.blog.findUnique({
+    where: { id },
+  });
+
+  if (blog == null) return notFound();
+
+  let imagePath = blog.cover;
+  if (data.image != null && data.image.size > 0) {
+    await fs.unlink(`public${blog.cover}`);
+    imagePath = `/user/blogs/${crypto.randomUUID()}-${data.image.name}`;
+    await fs.writeFile(
+      `public${imagePath}`,
+      Buffer.from(await data.image.arrayBuffer())
+    );
+  }
+
+  await db.blog.update({
+    where: { id },
+    data: {
+      title: data.title,
+      summary: data.summary,
+      content: data.content,
+      cover: imagePath,
     },
   });
 }
