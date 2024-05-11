@@ -23,7 +23,7 @@ export default function BlogForm({ blog }: { blog?: Blog | null }) {
           required
           defaultValue={blog?.title || ""}
         />
-        {blog?.title && <div className="text-red-500">{blog.title}</div>}
+        {error?.title && <div className="text-red-500">{error.title}</div>}
       </div>
       <div className="space-y-2">
         <Label htmlFor="summary">Name</Label>
@@ -34,7 +34,7 @@ export default function BlogForm({ blog }: { blog?: Blog | null }) {
           required
           defaultValue={blog?.summary || ""}
         />
-        {blog?.summary && <div className="text-red-500">{blog.summary}</div>}
+        {error?.summary && <div className="text-red-500">{error.summary}</div>}
       </div>
       <div className="space-y-2">
         <Label htmlFor="content">Name</Label>
@@ -45,7 +45,7 @@ export default function BlogForm({ blog }: { blog?: Blog | null }) {
           required
           defaultValue={blog?.content || ""}
         />
-        {blog?.content && <div className="text-red-500">{blog.content}</div>}
+        {error?.content && <div className="text-red-500">{error.content}</div>}
       </div>
       <div className="space-y-2">
         <Label htmlFor="image">Image</Label>
@@ -58,7 +58,7 @@ export default function BlogForm({ blog }: { blog?: Blog | null }) {
             alt="Product Image"
           />
         )}
-        {blog?.cover && <div className="text-destructive">{blog.cover}</div>}
+        {error?.cover && <div className="text-destructive">{error.cover}</div>}
       </div>
       <SubmitButton />
     </form>
