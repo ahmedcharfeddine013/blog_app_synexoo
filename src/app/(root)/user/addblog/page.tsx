@@ -1,7 +1,7 @@
 import React from "react";
 import BlogForm from "../../../../components/blog/BlogForm";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import AddBlogForm from "@/components/blog/AddBlogForm";
+import AddBlogForm from "@/components/blog/BlogForm";
 
 export default async function AddBlogUserPage() {
     const user = await useCurrentUser()
